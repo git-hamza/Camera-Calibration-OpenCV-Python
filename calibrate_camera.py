@@ -92,28 +92,31 @@ class CameraCalibration:
             mean_error += error
         print(f"total error: {mean_error/len(objpoints)}")
 
-        caliberation_dictionary = {"camera_matrix": mtx,
-                                   "distortion": dist,
-                                   "rotation_vectors": rvecs,
-                                   "translation_vectors": tvecs}
+        calibration_dictionary = {"camera_matrix": mtx,
+                                  "distortion": dist,
+                                  "rotation_vectors": rvecs,
+                                  "translation_vectors": tvecs}
 
-        np.save("camera_caliberation_values.npy", caliberation_dictionary)
-        return caliberation_dictionary
+        np.save("camera_calibration_values.npy", calibration_dictionary)
+        return calibration_dictionary
 
     def undistort_frame(self, img):
         """
         undistort frame based on the known calibration matrix
         """
         if img.shape[:2] != (self.height, self.width):
-            print(f"Input image {img.shape[:2]} is of the required shape i.e. {(self.height, self.width)}")
+            print(f"Input image {img.shape[:2][::-1]} is not of the required shape i.e. {(self.width, self.height)}")
         else:
             dst = cv2.remap(img, self.mapx, self.mapy, cv2.INTER_LINEAR)
             return dst
 
-    def undistort_images(self, input_path, output_path="output"):
+    def undistort_images(self, input_path, output_dir="undistorted"):
         """
         save undistort images directory
         """
+        if not os.path.exists(output_dir):
+            os.makedirs(output_dir)
+
         file_types = ("jpg", "jpeg", "png")  # the tuple of file types
         files_grabbed = []
 
@@ -122,14 +125,10 @@ class CameraCalibration:
             for t_name in file_types:
                 files_grabbed.extend(glob.glob(f"{input_path}/*.{t_name}"))
 
-            if not os.path.exists(output_path):
-                os.makedirs(output_path)
         # single image path
         elif os.path.isfile(input_path):
             file_extension = os.path.basename(input_path).split(".")[-1]
             files_grabbed = [input_path] if file_extension in file_types else []
-            if "." not in output_path:
-                output_path = f"{output_path}.{file_extension}"
 
         # processing the required images
         for f_path in files_grabbed:
@@ -137,10 +136,10 @@ class CameraCalibration:
             img = cv2.imread(f_path)
 
             out_img = self.undistort_frame(img)
-            cv2.imwrite(os.path.join(output_path, img_name), out_img)
+            cv2.imwrite(os.path.join(output_dir, img_name), out_img)
 
             # Displaying the undistorted images
             cv2.namedWindow("Orignal Vs Undistorted", cv2.WINDOW_NORMAL)
-            cv2.imshow("Orignal Vs Undistorted", np.hstack((img,out_img)))
+            cv2.imshow("Orignal Vs Undistorted", np.hstack((img, out_img)))
             cv2.waitKey(0)
         cv2.destroyAllWindows()

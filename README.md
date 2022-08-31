@@ -1,11 +1,19 @@
 # Camera-Calibration-OpenCV-Python
 
 ---
-
 # Source Code
 Source code is compose of a single python class which you can import in your code. You can either feed already
 calibrated camera matrix to undistort images or you can provide chessboard images with different orientation 
 to generate camera matrix.
+
+### Functionalities
+
+- [x] generate calibration matrix
+- [x] undistort a loaded frame
+- [x] undistort images from directory
+- [ ] undistort videos
+- [ ] generate calibration matrix using video
+- [ ] generate calibration matrix using webcam
 
 ## chessboard image
 Currently, our source code use the chessboard mentioned below. Its dimension is (6,9), 
@@ -13,12 +21,6 @@ we take dimensions in terms of corners inside the chess board. To create your ow
 please visit the following [link](https://docs.opencv.org/4.x/da/d0d/tutorial_camera_calibration_pattern.html).
 
 ![Screenshot](chessboard.png)
-## Future Addition:
-
-- [ ] undistort videos
-- [ ] generate calibration matrix using video
-- [ ] generate calibration matrix using webcam
-
 
 # Resources
 Go through the below resourses in the following order in order to get better understanding regarding the
