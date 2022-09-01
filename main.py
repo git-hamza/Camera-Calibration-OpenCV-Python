@@ -36,20 +36,20 @@ def visualize_straight_lines_distort_vs_undistort(orig_img, undist_img):
                 break
 
         for i in range(len(points)-1):
-            cv2.line(img,points[i],points[i+1],color=(0,0,255),thickness=3)
+            cv2.line(img, points[i],points[i+1], color=(0, 0, 255), thickness=3)
 
         all_imgs[img_cat] = img
 
-    cv2.namedWindow("Orignal Vs Undistorted", cv2.WINDOW_NORMAL)
-    cv2.imshow("Orignal Vs Undistorted", np.hstack((all_imgs["orig_img"], all_imgs["undist_img"])))
+    cv2.namedWindow("Original Vs Undistorted", cv2.WINDOW_NORMAL)
+    cv2.imshow("Original Vs Undistorted", np.hstack((all_imgs["orig_img"], all_imgs["undist_img"])))
     cv2.waitKey(0)
     cv2.destroyAllWindows()
 
 
 if __name__ == "__main__":
-    matrix_path = "logitech_old/camera_caliberation_values.npy"
-    imgs_shape = (1024, 576)
-    img_direct_path = ""
+    matrix_path = "camera_caliberation_values.npy"
+    imgs_shape = (1920, 1080)
+    img_direct_path = "./"
     cam_calib = CameraCalibration(calibration_matrix_path=matrix_path, imgs_shape=imgs_shape)
 
     # compare lines of normal and undistort image

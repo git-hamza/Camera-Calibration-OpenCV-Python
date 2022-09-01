@@ -139,7 +139,23 @@ class CameraCalibration:
             cv2.imwrite(os.path.join(output_dir, img_name), out_img)
 
             # Displaying the undistorted images
-            cv2.namedWindow("Orignal Vs Undistorted", cv2.WINDOW_NORMAL)
-            cv2.imshow("Orignal Vs Undistorted", np.hstack((img, out_img)))
+            cv2.namedWindow("Original Vs Undistorted", cv2.WINDOW_NORMAL)
+            cv2.imshow("Original Vs Undistorted", np.hstack((img, out_img)))
             cv2.waitKey(0)
         cv2.destroyAllWindows()
+
+    def original_image_point_in_undistorted_image(self, point):
+        """
+        This function get you the shifted original point in undistorted image.
+        Args:
+            point: x,y cordinates from original image
+
+        Returns:
+        a 1D-list having x,y cordinate.
+        """
+        sparse_img = np.zeros((self.height, self.width), dtype=bool)
+        sparse_img[point[1]][point[0]] = True
+
+        sparse_undist = self.undistort_frame(sparse_img.astype(np.uint8))
+        true_cord = np.argwhere(sparse_undist).tolist()
+        return true_cord[0]

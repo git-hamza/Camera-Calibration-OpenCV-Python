@@ -11,6 +11,7 @@ to generate camera matrix.
 - [x] generate calibration matrix
 - [x] undistort a loaded frame
 - [x] undistort images from directory
+- [x] shifted original image point in undistorted image
 - [ ] undistort videos
 - [ ] generate calibration matrix using video
 - [ ] generate calibration matrix using webcam
