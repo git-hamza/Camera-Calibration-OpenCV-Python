@@ -156,6 +156,8 @@ class CameraCalibration:
         sparse_img = np.zeros((self.height, self.width), dtype=bool)
         sparse_img[point[1]][point[0]] = True
 
-        sparse_undist = self.undistort_frame(sparse_img.astype(np.uint8))
+        sparse_img = sparse_img.astype(np.float32)
+
+        sparse_undist = self.undistort_frame(sparse_img)
         true_cord = np.argwhere(sparse_undist).tolist()
-        return true_cord[0]
+        return true_cord[0][::-1]
